@@ -1,0 +1,174 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [postgis]
+}
+
+enum Role {
+  DONOR
+  HOSPITAL
+  BLOOD_BANK
+}
+
+enum Urgency {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model User {
+  id           String    @id @default(uuid())
+  role         Role
+  name         String
+  email        String    @unique
+  mobile       String?   @unique
+  password     String
+  bloodType    String?
+  lastDonation DateTime?
+
+  // Storing geometry for PostGIS
+  location     Unsupported("geometry(Point, 4326)")?
+
+  otp          String?
+  otpExpires   DateTime?
+
+  // Gamification & Tracking
+  points           Int       @default(0)
+  level            String    @default("Beginner")
+  badges           String[]
+  streaks          Int       @default(0)
+  livesImpacted    Int       @default(0)
+  emergencyWilling Boolean   @default(false)
+
+  createdAt    DateTime  @default(now())
+  updatedAt DateTime @updatedAt
+
+  requests           BloodRequest[]
+  campaigns          Campaign[]
+  bloodUnits         BloodUnit[]       @relation("BloodBankUnits")
+  donorRecords       DonationRecord[]  @relation("DonorRecords")
+  bloodBankRecords   DonationRecord[]  @relation("BloodBankCollections")
+  notificationLogs   NotificationLog[]
+  requestResponses   RequestResponse[]
+}
+
+model BloodRequest {
+  id          String  @id @default(uuid())
+  requesterId String
+  requester   User    @relation(fields: [requesterId], references: [id])
+  bloodType   String
+  urgency     Urgency
+  patientName String?
+  ward        String?
+  units       Int     @default(1)
+
+  // Storing geometry for PostGIS
+  location Unsupported("geometry(Point, 4326)")?
+
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  notificationLogs NotificationLog[]
+  responses        RequestResponse[]
+}
+
+model Campaign {
+  id          String  @id @default(uuid())
+  organizerId String
+  organizer   User    @relation(fields: [organizerId], references: [id])
+  name        String
+  description String?
+
+  // Storing geometry for PostGIS
+  location Unsupported("geometry(Point, 4326)")?
+
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  donationRecords DonationRecord[]
+}
+
+enum BloodUnitStatus {
+  TESTING
+  AVAILABLE
+  EXPIRED
+  USED
+  TRANSFERRED
+}
+
+model BloodUnit {
+  id             String          @id @default(uuid())
+  bloodBankId    String
+  bloodBank      User            @relation("BloodBankUnits", fields: [bloodBankId], references: [id])
+  bloodType      String
+  volume         Int             // in ml
+  collectionDate DateTime
+  expiryDate     DateTime
+  status         BloodUnitStatus @default(TESTING)
+
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+enum DonationStatus {
+  COMPLETED
+  FAILED
+  ADVERSE_REACTION
+}
+
+model DonationRecord {
+  id          String         @id @default(uuid())
+  donorId     String
+  donor       User           @relation("DonorRecords", fields: [donorId], references: [id])
+  bloodBankId String?
+  bloodBank   User?          @relation("BloodBankCollections", fields: [bloodBankId], references: [id])
+  campaignId  String?
+  campaign    Campaign?      @relation(fields: [campaignId], references: [id])
+  volume      Int
+  date        DateTime       @default(now())
+  status      DonationStatus @default(COMPLETED)
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model NotificationLog {
+  id        String       @id @default(uuid())
+  requestId String
+  request   BloodRequest @relation(fields: [requestId], references: [id])
+  donorId   String
+  donor     User         @relation(fields: [donorId], references: [id])
+  distance  Float?       // in meters
+  sentAt    DateTime     @default(now())
+  status    String       @default("DELIVERED")
+
+  @@unique([requestId, donorId])
+}
+
+enum ResponseType {
+  ACCEPTED
+  REJECTED
+  UNAVAILABLE
+}
+
+model RequestResponse {
+  id          String       @id @default(uuid())
+  requestId   String
+  request     BloodRequest @relation(fields: [requestId], references: [id])
+  donorId     String
+  donor       User         @relation(fields: [donorId], references: [id])
+  response    ResponseType
+  eta         Int?         // in minutes
+  respondedAt DateTime     @default(now())
+
+  @@unique([requestId, donorId])
+}

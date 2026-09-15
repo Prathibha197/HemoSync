@@ -1,0 +1,10 @@
+{
+  "description": "Connects blood donors with those in need during emergencies, facilitating quick and efficient blood donation to save lives.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

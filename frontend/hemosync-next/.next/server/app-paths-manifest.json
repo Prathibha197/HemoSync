@@ -1,0 +1,10 @@
+{
+  "/page": "app/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/donor/page": "app/donor/page.js",
+  "/hospital/page": "app/hospital/page.js",
+  "/donor/find-banks/page": "app/donor/find-banks/page.js",
+  "/hospital/requests/page": "app/hospital/requests/page.js",
+  "/hospital/inventory/page": "app/hospital/inventory/page.js",
+  "/hospital/fhir/page": "app/hospital/fhir/page.js"
+}
