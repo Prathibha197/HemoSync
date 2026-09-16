@@ -2,7 +2,7 @@ import axios from 'axios'
 import { getToken, clearToken, clearStoredRole } from '@/lib/utils'
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://hemosync.onrender.com',
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://hemosync.onrender.com/api',
   timeout: 15000,
   headers: { 'Content-Type': 'application/json' },
 })
