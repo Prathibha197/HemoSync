@@ -62,7 +62,8 @@ const register = async (req, res) => {
       });
     }
 
-    await sendOTP(email, otp);
+    // Fire-and-forget the email so it doesn't block the response
+    sendOTP(email, otp).catch(console.error);
     
     // Simulate dispatch
     console.log(`\n==========================================`);
@@ -112,7 +113,8 @@ const login = async (req, res) => {
       data: { otp, otpExpires }
     });
 
-    await sendOTP(user.email, otp);
+    // Fire-and-forget the email so it doesn't block the login response if SMTP hangs
+    sendOTP(user.email, otp).catch(console.error);
 
     res.json({ message: 'OTP sent to email', pendingVerification: true, email: user.email });
   } catch (error) {
