@@ -86,7 +86,19 @@ const login = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    let isMatch = await bcrypt.compare(password, user.password);
+    
+    // Fallback if they entered it in plain text manually into Supabase
+    if (!isMatch && password === user.password) {
+      isMatch = true;
+      // Re-hash and save to fix the database seamlessly
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { password: hashedPassword }
+      });
+    }
+
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
