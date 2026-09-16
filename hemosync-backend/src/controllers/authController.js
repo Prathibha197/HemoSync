@@ -116,6 +116,10 @@ const login = async (req, res) => {
     // Fire-and-forget the email so it doesn't block the login response if SMTP hangs
     sendOTP(user.email, otp).catch(console.error);
 
+    console.log(`\n==========================================`);
+    console.log(`🔑 LOGIN OTP SIMULATION for ${user.email}: ${otp}`);
+    console.log(`==========================================\n`);
+
     res.json({ message: 'OTP sent to email', pendingVerification: true, email: user.email });
   } catch (error) {
     console.error('Login Error:', error);
