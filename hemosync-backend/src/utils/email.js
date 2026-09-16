@@ -13,6 +13,30 @@ const transporter = nodemailer.createTransport({
 
 const sendOTP = async (email, otp) => {
   try {
+    if (process.env.RESEND_API_KEY) {
+      console.log(`[Resend] Attempting to send OTP email to ${email}...`);
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'HemoSync <onboarding@resend.dev>',
+          to: email,
+          subject: 'Your HemoSync Verification Code',
+          html: `<b>Your login verification code is ${otp}. It is valid for 5 minutes.</b>`
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(`[Resend] Successfully sent OTP email! ID: ${data.id}`);
+      } else {
+        console.error(`[Resend] ERROR: ${JSON.stringify(data)}`);
+      }
+      return;
+    }
+
     console.log(`[Nodemailer] Attempting to send OTP email to ${email}...`);
     const info = await transporter.sendMail({
       from: '"HemoSync Support" <no-reply@hemosync.com>',
