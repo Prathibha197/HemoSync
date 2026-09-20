@@ -63,9 +63,27 @@ export default function RequestsTable({ fullPage }) {
                         <p className="text-xs text-muted mb-0.5">Matched Donor</p>
                         <p className="text-sm font-medium text-emerald">{r.matchedDonor.name}</p>
                       </div>
-                      <a href={`tel:${r.matchedDonor.phone}`} className="px-3 py-1.5 bg-emerald/10 hover:bg-emerald/20 border border-emerald/20 text-emerald rounded-md text-xs font-mono font-medium flex items-center gap-2 transition-colors">
-                        📞 Call Donor
-                      </a>
+                      <div className="flex gap-2">
+                        <a href={`tel:${r.matchedDonor.phone}`} className="px-3 py-1.5 bg-emerald/10 hover:bg-emerald/20 border border-emerald/20 text-emerald rounded-md text-xs font-mono font-medium flex items-center gap-2 transition-colors">
+                          📞 Call
+                        </a>
+                        {r.status !== 'FULFILLED' && (
+                          <button
+                            onClick={async () => {
+                              try {
+                                const { updateBloodRequest } = require('@/services/api');
+                                await updateBloodRequest(r.id, { status: 'FULFILLED' });
+                                setRequests(prev => prev.map(req => req.id === r.id ? { ...req, status: 'FULFILLED' } : req));
+                              } catch (e) {
+                                console.error('Failed to update status', e);
+                              }
+                            }}
+                            className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-slate rounded-md text-xs font-mono font-medium flex items-center gap-2 transition-colors"
+                          >
+                            ✓ Mark Fulfilled
+                          </button>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>

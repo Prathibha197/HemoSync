@@ -40,8 +40,33 @@ function AlertCard({ alert }) {
         <p className="text-xs text-muted mt-1">{alert.address} · {alert.distance}</p>
         <p className="text-xs text-muted mb-1">{alert.units} unit{alert.units > 1 ? 's' : ''} needed</p>
         {alert.notes && <p className="text-xs text-slate mb-3 italic">{alert.notes}</p>}
-        {responded
-          ? <div className="flex items-center gap-2 py-2"><span className="w-2 h-2 rounded-full bg-emerald" /><span className="text-xs text-emerald font-medium">Response submitted — the hospital will contact you.</span></div>
+        {alert.fulfilled ? (
+          <div className="mt-3 pt-3 border-t border-white/10">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xl">🎉</span>
+              <span className="text-xs text-emerald font-medium">Request Fulfilled!</span>
+            </div>
+            <p className="text-xs text-slate ml-7">Thank you for donating and saving a life!</p>
+          </div>
+        ) : responded
+          ? (
+            <div className="mt-3 pt-3 border-t border-white/10">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-2 h-2 rounded-full bg-emerald" />
+                <span className="text-xs text-emerald font-medium">Response submitted! The hospital will call you.</span>
+              </div>
+              <div className="flex gap-2">
+                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(alert.hospital)}`} target="_blank" rel="noreferrer" className="flex-1 text-center py-1.5 bg-emerald/10 hover:bg-emerald/20 text-emerald text-xs font-medium rounded border border-emerald/20 transition-colors">
+                  📍 Navigate
+                </a>
+                {alert.hospitalPhone && (
+                  <a href={`tel:${alert.hospitalPhone}`} className="flex-1 text-center py-1.5 bg-white/5 hover:bg-white/10 text-slate text-xs font-medium rounded border border-white/10 transition-colors">
+                    📞 Call Hospital
+                  </a>
+                )}
+              </div>
+            </div>
+          )
           : <Button size="sm" variant="danger" onClick={() => setTriageOpen(true)} className="mt-3 w-full" loading={loading}>I Can Donate</Button>
         }
       </div>

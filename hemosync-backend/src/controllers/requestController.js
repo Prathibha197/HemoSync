@@ -98,6 +98,11 @@ const updateRequest = async (req, res) => {
       data: { status }
     });
 
+    if (status === 'FULFILLED') {
+      const io = getIo();
+      io.emit('request:fulfilled', { alertId: id });
+    }
+
     res.json({ message: 'Blood request updated', updatedRequest });
   } catch (error) {
     console.error('Update Request Error:', error);

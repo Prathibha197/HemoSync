@@ -13,7 +13,7 @@ export function useDonorAlerts() {
   }, [])
 
   const onNew       = useCallback((a) => setAlerts((p) => [a, ...p]), [])
-  const onFulfilled = useCallback(({ alertId }) => setAlerts((p) => p.filter((a) => a.id !== alertId)), [])
+  const onFulfilled = useCallback(({ alertId }) => setAlerts((p) => p.map((a) => a.id === alertId ? { ...a, fulfilled: true } : a)), [])
 
   useSocketEvent(SOCKET_EVENTS.EMERGENCY_REQUEST, onNew)
   useSocketEvent(SOCKET_EVENTS.REQUEST_FULFILLED, onFulfilled)
