@@ -99,6 +99,36 @@ const updateRequest = async (req, res) => {
     });
 
     if (status === 'FULFILLED') {
+      // Find the donor who accepted
+      const acceptedResponse = await prisma.requestResponse.findFirst({
+        where: { requestId: id, response: 'ACCEPTED' }
+      });
+
+      if (acceptedResponse) {
+        const donorId = acceptedResponse.donorId;
+        const hospitalId = updatedRequest.requesterId;
+        
+        // Create a Donation Record
+        await prisma.donationRecord.create({
+          data: {
+            donorId,
+            bloodBankId: hospitalId, // hospital acts as bloodBank here
+            volume: updatedRequest.units * 350, // approx 350ml per unit
+            status: 'COMPLETED'
+          }
+        });
+
+        // Update donor stats
+        await prisma.user.update({
+          where: { id: donorId },
+          data: {
+            livesImpacted: { increment: updatedRequest.units },
+            lastDonation: new Date(),
+            points: { increment: 50 }
+          }
+        });
+      }
+
       const io = getIo();
       io.emit('request:fulfilled', { alertId: id });
     }
