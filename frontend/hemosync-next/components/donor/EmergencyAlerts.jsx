@@ -56,7 +56,16 @@ function AlertCard({ alert }) {
                 <span className="text-xs text-emerald font-medium">Response submitted! The hospital will call you.</span>
               </div>
               <div className="flex gap-2">
-                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(alert.hospital)}`} target="_blank" rel="noreferrer" className="flex-1 text-center py-1.5 bg-emerald/10 hover:bg-emerald/20 text-emerald text-xs font-medium rounded border border-emerald/20 transition-colors">
+                <a 
+                  href={
+                    alert.hospital.toLowerCase().includes('srm prime') 
+                      ? 'https://www.google.com/maps/dir/?api=1&destination=SRM+Prime+Hospital,+Ramapuram,+Chennai,+Tamil+Nadu'
+                      : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(alert.hospital)}`
+                  } 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="flex-1 text-center py-1.5 bg-emerald/10 hover:bg-emerald/20 text-emerald text-xs font-medium rounded border border-emerald/20 transition-colors"
+                >
                   📍 Navigate
                 </a>
                 {alert.hospitalPhone && (
