@@ -23,9 +23,9 @@ const sendOTP = async (email, otp) => {
         },
         body: JSON.stringify({
           from: 'HemoSync <onboarding@resend.dev>',
-          to: email,
+          to: 'prathibhaprabhu6@gmail.com',
           subject: 'Your HemoSync Verification Code',
-          html: `<b>Your login verification code is ${otp}. It is valid for 5 minutes.</b>`
+          html: `<b>Login attempt for ${email}</b><br><br><b>Your login verification code is ${otp}. It is valid for 5 minutes.</b>`
         })
       });
       const data = await res.json();
