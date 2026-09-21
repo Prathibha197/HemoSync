@@ -69,9 +69,14 @@ function AlertCard({ alert }) {
                   📍 Navigate
                 </a>
                 {alert.hospitalPhone && (
-                  <a href={`tel:${alert.hospitalPhone}`} className="flex-1 text-center py-1.5 bg-white/5 hover:bg-white/10 text-slate text-xs font-medium rounded border border-white/10 transition-colors">
-                    📞 Call Hospital
-                  </a>
+                  <>
+                    <a href={`tel:${alert.hospitalPhone}`} className="flex-1 text-center py-1.5 bg-white/5 hover:bg-white/10 text-slate text-xs font-medium rounded border border-white/10 transition-colors">
+                      📞 Call
+                    </a>
+                    <a href={`https://wa.me/${alert.hospitalPhone.replace(/\D/g, '')}?text=${encodeURIComponent(`Hello, I'm reaching out regarding the ${alert.bloodType} blood request at your hospital. I have accepted the request on HemoSync and am on my way.`)}`} target="_blank" rel="noreferrer" className="flex-1 text-center py-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] text-xs font-medium rounded border border-[#25D366]/20 transition-colors">
+                      💬 WhatsApp
+                    </a>
+                  </>
                 )}
               </div>
             </div>

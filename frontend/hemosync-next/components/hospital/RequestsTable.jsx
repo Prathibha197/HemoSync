@@ -67,6 +67,9 @@ export default function RequestsTable({ fullPage }) {
                         <a href={`tel:${r.matchedDonor.phone}`} className="px-3 py-1.5 bg-emerald/10 hover:bg-emerald/20 border border-emerald/20 text-emerald rounded-md text-xs font-mono font-medium flex items-center gap-2 transition-colors">
                           📞 Call
                         </a>
+                        <a href={`https://wa.me/${r.matchedDonor.phone?.replace(/\D/g, '')}?text=${encodeURIComponent(`Hello ${r.matchedDonor.name}, this is regarding the ${r.bloodType} blood request you accepted for our hospital. Please let us know your ETA.`)}`} target="_blank" rel="noreferrer" className="px-3 py-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/20 text-[#25D366] rounded-md text-xs font-mono font-medium flex items-center gap-2 transition-colors">
+                          💬 WhatsApp
+                        </a>
                         {r.status !== 'FULFILLED' && (
                           <button
                             onClick={async () => {
