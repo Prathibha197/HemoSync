@@ -124,7 +124,8 @@ const updateRequest = async (req, res) => {
           data: {
             livesImpacted: { increment: updatedRequest.units },
             lastDonation: new Date(),
-            points: { increment: 50 }
+            points: { increment: 50 },
+            streaks: { increment: 1 }
           }
         });
       }
