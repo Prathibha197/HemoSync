@@ -10,9 +10,30 @@ export function useDonorAlerts() {
 
   useEffect(() => {
     getDonorAlerts().then(setAlerts).catch((e) => setError(e.message)).finally(() => setLoading(false))
+    
+    // Request notification permission for background alerts
+    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission()
+    }
   }, [])
 
-  const onNew       = useCallback((a) => setAlerts((p) => [a, ...p]), [])
+  const onNew = useCallback((a) => {
+    setAlerts((p) => [a, ...p])
+    
+    // Trigger OS-level push notification
+    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+      const notif = new Notification(`🚨 Urgent: ${a.bloodType} Blood Needed!`, {
+        body: `${a.units} unit(s) needed at ${a.hospital}. Can you donate? Click here to open your dashboard.`,
+        requireInteraction: true, // Keeps it on screen until seen
+        icon: '/logo.jpeg'
+      })
+      notif.onclick = () => {
+        window.focus()
+        notif.close()
+      }
+    }
+  }, [])
+
   const onFulfilled = useCallback(({ alertId }) => setAlerts((p) => p.map((a) => a.id === alertId ? { ...a, fulfilled: true } : a)), [])
 
   useSocketEvent(SOCKET_EVENTS.EMERGENCY_REQUEST, onNew)

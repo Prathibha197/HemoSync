@@ -19,6 +19,7 @@ export default function ERaktKoshPanel({ expanded }) {
     try {
       const result = await syncRaktKosha()
       setData((p) => ({ ...p, banks: p?.banks?.map((b) => ({ ...b, syncStatus:'synced', lastSync: new Date().toLocaleString('en-IN') })), lastGlobalSync: result.syncedAt }))
+      setTimeout(() => alert('Data synced with e-RaktKosh network successfully!'), 100);
     } finally { setSyncing(false) }
   }
 

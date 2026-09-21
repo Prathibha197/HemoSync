@@ -17,9 +17,25 @@ export default function BloodBankDashboard() {
       
     const socket = io(socketUrl)
 
+    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission()
+    }
+
     socket.on('emergency_alert', (data) => {
       console.log('Received emergency alert:', data)
       setAlerts((prev) => [data, ...prev])
+      
+      if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+        const notif = new Notification(`🚨 Urgent: ${data.bloodType} Blood Needed!`, {
+          body: `${data.units} unit(s) needed at ${data.hospital}. Click to view incoming requests.`,
+          requireInteraction: true,
+          icon: '/logo.jpeg'
+        })
+        notif.onclick = () => {
+          window.focus()
+          notif.close()
+        }
+      }
     })
 
     return () => socket.disconnect()

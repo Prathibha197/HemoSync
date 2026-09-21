@@ -13,9 +13,9 @@ const META = {
 }
 
 const LINKS = {
-  donor:     [{ href:'/donor',             label:'Home'      },{ href:'/donor/history',     label:'History'   },{ href:'/donor/find-banks',  label:'Find Banks' }],
-  hospital:  [{ href:'/hospital',          label:'Dashboard' },{ href:'/hospital/requests',  label:'Requests'  },{ href:'/hospital/inventory', label:'Inventory' },{ href:'/hospital/fhir',      label:'FHIR'      }],
-  bloodbank: [{ href:'/bloodbank',         label:'Dashboard' },{ href:'/bloodbank/raktkosha',label:'e-RaktKosh'},{ href:'/bloodbank/whatsapp', label:'WhatsApp'  },{ href:'/bloodbank/inventory',label:'Inventory' }],
+  donor:     [{ href:'/donor',             label:'Dashboard' },{ href:'/donor/history',     label:'History'   }],
+  hospital:  [{ href:'/hospital',          label:'Dashboard' }],
+  bloodbank: [{ href:'/bloodbank',         label:'Dashboard' }],
 }
 
 export default function NavBar() {

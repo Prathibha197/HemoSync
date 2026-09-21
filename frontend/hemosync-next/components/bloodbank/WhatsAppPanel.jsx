@@ -19,7 +19,12 @@ export default function WhatsAppPanel({ expanded }) {
 
   const handleSend = async () => {
     setSending(true)
-    try { await sendWhatsAppPrompt({ group, type:'stock_prompt' }); setSent(true); setTimeout(() => setSent(false), 3000) }
+    try { 
+      await sendWhatsAppPrompt({ group, type:'stock_prompt' }); 
+      setSent(true); 
+      setTimeout(() => alert('Twilio WhatsApp API requires a registered Twilio Account and Facebook Business verification. This is currently running in simulation mode.'), 100);
+      setTimeout(() => setSent(false), 3000) 
+    }
     finally { setSending(false) }
   }
 
