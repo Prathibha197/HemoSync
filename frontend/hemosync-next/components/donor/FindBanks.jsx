@@ -48,7 +48,11 @@ export default function FindBanks() {
               <div className="flex items-center gap-3 text-xs text-slate mb-2">
                 <span className="font-mono">{bank.distance}</span>
                 <span className="text-dim">·</span>
-                <span>{bank.phone}</span>
+                <span>
+                  <a href={`tel:${bank.phone}`} className="text-emerald hover:text-emerald/80 transition-colors flex items-center gap-1">
+                    📞 Call
+                  </a>
+                </span>
                 {bank.emergencySupport && <><span className="text-dim">·</span><span className="text-blood-mid font-mono text-2xs">24/7 EMERGENCY</span></>}
               </div>
               <div className="flex flex-wrap gap-1 mb-3">

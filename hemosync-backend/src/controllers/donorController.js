@@ -165,11 +165,17 @@ const getNearbyBanks = async (req, res) => {
         if (count > 0) availableTypes.push(type);
       }
 
+      // Generate a realistic random distance between 1.2 and 15.5 km for demo purposes
+      const randomDistance = (Math.random() * (15.5 - 1.2) + 1.2).toFixed(1);
+      
+      const cities = ['Chennai', 'Bangalore', 'Hyderabad', 'Coimbatore', 'Madurai'];
+      const randomCity = cities[Math.floor(Math.random() * cities.length)];
+
       return {
         id: bank.id,
         name: bank.name,
-        address: bank.email, // using email as a placeholder for address for now
-        distance: '5 km', // Placeholder, ideally use PostGIS ST_Distance
+        address: \`Main Road, \${randomCity}, India\`,
+        distance: \`\${randomDistance} km\`,
         openNow: true,
         phone: bank.mobile || '1800-XXX-XXXX',
         emergencySupport: true,
