@@ -141,9 +141,54 @@ const getAlerts = async (req, res) => {
   }
 };
 
+const getNearbyBanks = async (req, res) => {
+  try {
+    const banks = await prisma.user.findMany({
+      where: { role: 'BLOOD_BANK' },
+      include: {
+        bloodUnits: {
+          where: { status: 'AVAILABLE' }
+        }
+      }
+    });
+
+    const formatted = banks.map(bank => {
+      // Aggregate inventory by type for this bank
+      const inventory = {};
+      const availableTypes = [];
+      
+      bank.bloodUnits.forEach(unit => {
+        inventory[unit.bloodType] = (inventory[unit.bloodType] || 0) + 1;
+      });
+
+      for (const [type, count] of Object.entries(inventory)) {
+        if (count > 0) availableTypes.push(type);
+      }
+
+      return {
+        id: bank.id,
+        name: bank.name,
+        address: bank.email, // using email as a placeholder for address for now
+        distance: '5 km', // Placeholder, ideally use PostGIS ST_Distance
+        openNow: true,
+        phone: bank.mobile || '1800-XXX-XXXX',
+        emergencySupport: true,
+        availableTypes,
+        inventory
+      };
+    });
+
+    res.json(formatted);
+  } catch (error) {
+    console.error('Get Nearby Banks Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 module.exports = {
   getProfile,
   getAlerts,
   respondToRequest,
-  getHistory
+  getHistory,
+  getNearbyBanks
 };
