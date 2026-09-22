@@ -26,9 +26,14 @@ function IncomingRequestCard({ req }) {
       <div className="flex items-center justify-between mt-1">
         <p className="text-sm font-medium text-ink">{req.hospital}</p>
         {req.hospitalPhone && (
-          <a href={`tel:${req.hospitalPhone}`} className="px-2 py-1 bg-white/10 hover:bg-white/20 rounded-md text-xs font-mono text-blood border border-white/10 flex items-center gap-1 transition-colors">
-            📞 Call
-          </a>
+          <div className="flex gap-2">
+            <a href={`tel:${req.hospitalPhone}`} className="px-2 py-1 bg-white/10 hover:bg-white/20 rounded-md text-xs font-mono text-blood border border-white/10 flex items-center gap-1 transition-colors">
+              📞 Call
+            </a>
+            <a href={`https://wa.me/${req.hospitalPhone.replace(/\D/g, '')}?text=${encodeURIComponent(`Hello from the Blood Bank. We have received your ${req.bloodType} blood request for ${req.units} units.`)}`} target="_blank" rel="noreferrer" className="px-2 py-1 bg-[#25D366]/10 hover:bg-[#25D366]/20 rounded-md text-xs font-mono text-[#25D366] border border-[#25D366]/20 flex items-center gap-1 transition-colors">
+              💬 WhatsApp
+            </a>
+          </div>
         )}
       </div>
       <p className="text-xs text-muted mt-1">{req.ward} · {req.units} unit{req.units > 1 ? 's' : ''} needed</p>
