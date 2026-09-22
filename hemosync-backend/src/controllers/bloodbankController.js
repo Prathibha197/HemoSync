@@ -151,5 +151,6 @@ module.exports = {
   addBloodUnit,
   getIncomingRequests,
   fulfillRequest,
-  declineRequest
+  declineRequest,
+  simulateWhatsAppReply
 };
