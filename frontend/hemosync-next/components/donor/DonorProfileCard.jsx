@@ -26,7 +26,7 @@ export default function DonorProfileCard() {
           <div>
             <p className="font-mono text-2xs text-muted tracking-widest mb-0.5">DONOR PROFILE</p>
             <h2 className="font-display text-xl text-ink">{profile.name}</h2>
-            <p className="text-xs text-muted mt-0.5">{profile.city} · {age} yrs · {profile.gender}</p>
+            <p className="text-xs text-muted mt-0.5">{profile.city} · {age} yrs</p>
           </div>
           <div className="flex flex-col items-end gap-1.5">
             <div className="w-12 h-12 rounded-full bg-blood/10 flex items-center justify-center">
