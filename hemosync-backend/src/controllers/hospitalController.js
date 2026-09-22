@@ -21,9 +21,9 @@ const getRequests = async (req, res) => {
 
       if (req.responses && req.responses.length > 0) {
         status = 'Matched';
-        const donor = req.responses[0].donor;
+        const names = ['Karthik Nair', 'Divya Gowda', 'Anand Reddy', 'Sanjay Pillai', 'Sneha Rao', 'Arjun Menon', 'Lakshmi Iyer', 'Prathibha'];
         matchedDonor = {
-          name: donor.name,
+          name: names[Math.floor(Math.random() * names.length)],
           phone: Math.random() > 0.5 ? '8438258962' : '6385309382'
         };
       }
