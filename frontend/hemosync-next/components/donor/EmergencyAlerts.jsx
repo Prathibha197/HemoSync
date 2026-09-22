@@ -11,6 +11,7 @@ function AlertCard({ alert }) {
   const [triageOpen, setTriageOpen] = useState(false)
   const [responded,  setResponded]  = useState(false)
   const [loading,    setLoading]    = useState(false)
+  const [cooldownError, setCooldownError] = useState(null)
   const urgV = alert.urgency === 'critical' ? 'critical' : alert.urgency === 'urgent' ? 'urgent' : 'standard'
 
   const confirm = async () => {
@@ -81,7 +82,34 @@ function AlertCard({ alert }) {
               </div>
             </div>
           )
-          : <Button size="sm" variant="danger" onClick={() => setTriageOpen(true)} className="mt-3 w-full" loading={loading}>I Can Donate</Button>
+          )
+          : (
+            <>
+              {cooldownError && (
+                <div className="mt-3 mb-2 p-2 bg-amber/10 border border-amber/20 rounded text-amber text-xs text-center font-medium">
+                  {cooldownError}
+                </div>
+              )}
+              <Button size="sm" variant="danger" onClick={async () => {
+                setLoading(true);
+                try {
+                  const { getDonorProfile } = require('@/services/donor.service');
+                  const profile = await getDonorProfile();
+                  if (profile.cooldownDays > 0) {
+                    setCooldownError(`You have recently donated and you can't donate now. Cooldown: ${profile.cooldownDays} days remaining.`);
+                  } else {
+                    setTriageOpen(true);
+                  }
+                } catch (e) {
+                  setTriageOpen(true); // fallback
+                } finally {
+                  setLoading(false);
+                }
+              }} className="mt-3 w-full" loading={loading}>
+                I Can Donate
+              </Button>
+            </>
+          )
         }
       </div>
       <TriageModal open={triageOpen} alert={alert} onClose={() => setTriageOpen(false)} onPass={() => { setTriageOpen(false); confirm() }} />
