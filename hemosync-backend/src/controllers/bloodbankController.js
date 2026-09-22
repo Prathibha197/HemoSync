@@ -113,6 +113,39 @@ const declineRequest = async (req, res) => {
   }
 };
 
+const simulateWhatsAppReply = async (req, res) => {
+  try {
+    const bloodBankId = req.user.id;
+    const { parsedData } = req.body;
+    
+    // Create new blood units for the parsed data
+    const newUnits = [];
+    for (const [bloodType, count] of Object.entries(parsedData)) {
+      for (let i = 0; i < count; i++) {
+        newUnits.push({
+          bloodBankId,
+          bloodType,
+          volume: 350,
+          collectionDate: new Date(),
+          expiryDate: new Date(Date.now() + 35 * 24 * 60 * 60 * 1000), // 35 days
+          status: 'AVAILABLE'
+        });
+      }
+    }
+
+    if (newUnits.length > 0) {
+      await prisma.bloodUnit.createMany({
+        data: newUnits
+      });
+    }
+
+    res.json({ success: true, message: 'Inventory updated from WhatsApp parsed data' });
+  } catch (err) {
+    console.error('Simulate WA Reply Error:', err);
+    res.status(500).json({ error: 'Failed to update inventory' });
+  }
+};
+
 module.exports = {
   getInventory,
   addBloodUnit,

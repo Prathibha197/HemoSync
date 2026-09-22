@@ -1,6 +1,6 @@
 const express = require('express');
 const { authenticate } = require('../utils/authMiddleware');
-const { getInventory, addBloodUnit, getIncomingRequests, fulfillRequest, declineRequest } = require('../controllers/bloodbankController');
+const { getInventory, addBloodUnit, getIncomingRequests, fulfillRequest, declineRequest, simulateWhatsAppReply } = require('../controllers/bloodbankController');
 
 const router = express.Router();
 
@@ -16,5 +16,6 @@ router.get('/raktkosha/status', (req, res) => res.json({ banks: [], lastGlobalSy
 router.post('/raktkosha/sync', (req, res) => res.json({ success: true, syncedAt: new Date().toISOString() }));
 router.get('/whatsapp/log', (req, res) => res.json([]));
 router.post('/whatsapp/send', (req, res) => res.json({ success: true, sent: new Date().toISOString() }));
+router.post('/whatsapp/simulate-reply', simulateWhatsAppReply);
 
 module.exports = router;

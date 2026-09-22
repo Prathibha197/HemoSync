@@ -12,3 +12,4 @@ export const fulfillRequest      = async (id) => USE_MOCK ? { success: true, id 
 export const declineRequest      = async (id) => USE_MOCK ? { success: true, id } : (await api.post(API_ROUTES.BB_DECLINE(id))).data
 export const syncRaktKosha       = async () => USE_MOCK ? { success: true, syncedAt: new Date().toISOString() } : (await api.post(API_ROUTES.RAKTKOSHA_SYNC)).data
 export const sendWhatsAppPrompt  = async (p) => USE_MOCK ? { success: true, sent: new Date().toISOString() } : (await api.post(API_ROUTES.WHATSAPP_SEND, p)).data
+export const simulateWhatsAppReply = async (parsedData) => USE_MOCK ? { success: true } : (await api.post('/bloodbank/whatsapp/simulate-reply', { parsedData })).data

@@ -74,7 +74,34 @@ export default function WhatsAppPanel({ expanded }) {
                     <Badge variant={SV[entry.status] ?? 'default'}>{entry.status}</Badge>
                   </div>
                 </div>
-                <p className="text-xs text-slate truncate">{entry.message}</p>
+                <p className="text-xs text-slate">{entry.message}</p>
+                {entry.direction === 'out' && entry.status === 'delivered' && (
+                  <button 
+                    onClick={async () => {
+                      const parsedData = { 'A+': 15, 'B+': 10, 'O+': 22, 'AB+': 5 };
+                      const replyMessage = {
+                        id: Date.now(),
+                        direction: 'in',
+                        contact: 'Apollo Hospital (Simulated Reply)',
+                        time: 'Just now',
+                        status: 'parsed',
+                        message: 'We have 15 units of A+, 10 units of B+, 22 units of O+, and 5 units of AB+ available.',
+                        parsedData
+                      };
+                      setLog(prev => [replyMessage, ...prev]);
+                      
+                      try {
+                        const { simulateWhatsAppReply } = require('@/services/bloodbank.service');
+                        await simulateWhatsAppReply(parsedData);
+                      } catch (err) {
+                        console.error('Failed to simulate backend reply', err);
+                      }
+                    }}
+                    className="mt-1 text-[10px] text-emerald hover:text-emerald/80 underline font-mono cursor-pointer"
+                  >
+                    + Simulate Reply from Bank
+                  </button>
+                )}
                 {entry.parsedData && (
                   <div className="flex gap-1.5 mt-1 flex-wrap">
                     {Object.entries(entry.parsedData).map(([t, u]) => (
