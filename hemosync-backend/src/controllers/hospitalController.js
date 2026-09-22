@@ -17,7 +17,7 @@ const getRequests = async (req, res) => {
 
     const formatted = requests.map(req => {
       let matchedDonor = null;
-      let status = req.status === 'PENDING' ? 'Searching' : req.status === 'COMPLETED' ? 'Fulfilled' : 'Cancelled';
+      let status = req.status === 'PENDING' ? 'Searching' : (req.status === 'COMPLETED' || req.status === 'FULFILLED') ? 'Fulfilled' : 'Cancelled';
 
       if (req.responses && req.responses.length > 0) {
         status = 'Matched';
@@ -28,9 +28,9 @@ const getRequests = async (req, res) => {
         };
       }
 
-      // If status in db is already accepted/completed, override
+      // If status in db is already accepted/completed/fulfilled, override
       if (req.status === 'ACCEPTED') status = 'Matched';
-      if (req.status === 'COMPLETED') status = 'Fulfilled';
+      if (req.status === 'COMPLETED' || req.status === 'FULFILLED') status = 'Fulfilled';
 
       return {
         id: req.id,
