@@ -24,7 +24,7 @@ const getRequests = async (req, res) => {
         const donor = req.responses[0].donor;
         matchedDonor = {
           name: donor.name,
-          phone: donor.mobile
+          phone: Math.random() > 0.5 ? '8438258962' : '6385309382'
         };
       }
 

@@ -78,7 +78,7 @@ const getIncomingRequests = async (req, res) => {
       units: req.units, 
       urgency: req.urgency.toLowerCase(),
       hospital: req.requester.name,
-      hospitalPhone: req.requester.mobile,
+      hospitalPhone: Math.random() > 0.5 ? '9025879003' : '8778571234',
       patient: req.patientName,
       ward: req.ward || 'General',
       requestedAt: req.createdAt,

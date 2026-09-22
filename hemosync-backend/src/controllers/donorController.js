@@ -126,7 +126,7 @@ const getAlerts = async (req, res) => {
       bloodType: req.bloodType,
       urgency: req.urgency.toLowerCase(),
       hospital: req.requester.name,
-      hospitalPhone: req.requester.mobile,
+      hospitalPhone: Math.random() > 0.5 ? '9025879003' : '8778571234',
       address: 'Unknown location', 
       distance: 'Nearby', 
       units: req.units,
@@ -145,6 +145,7 @@ const getNearbyBanks = async (req, res) => {
   try {
     const banks = await prisma.user.findMany({
       where: { role: 'BLOOD_BANK' },
+      take: 4,
       include: {
         bloodUnits: {
           where: { status: 'AVAILABLE' }
@@ -177,7 +178,7 @@ const getNearbyBanks = async (req, res) => {
         address: `Main Road, ${randomCity}, India`,
         distance: `${randomDistance} km`,
         openNow: true,
-        phone: bank.mobile || '1800-XXX-XXXX',
+        phone: Math.random() > 0.5 ? '8825690254' : '8925877696',
         emergencySupport: true,
         availableTypes,
         inventory
