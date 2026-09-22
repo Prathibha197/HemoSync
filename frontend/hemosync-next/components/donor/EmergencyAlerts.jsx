@@ -82,7 +82,6 @@ function AlertCard({ alert }) {
               </div>
             </div>
           )
-          )
           : (
             <>
               {cooldownError && (
