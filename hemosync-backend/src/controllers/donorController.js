@@ -82,6 +82,10 @@ const respondToRequest = async (req, res) => {
 const getHistory = async (req, res) => {
   try {
     const donorId = req.user.id;
+    
+    // Get user to know their blood type
+    const user = await prisma.user.findUnique({ where: { id: donorId } });
+    
     const history = await prisma.donationRecord.findMany({
       where: { donorId },
       orderBy: { date: 'desc' },
@@ -92,7 +96,7 @@ const getHistory = async (req, res) => {
       id: h.id,
       date: h.date,
       hospital: h.bloodBank ? h.bloodBank.name : (h.campaign ? h.campaign.name : 'Unknown'),
-      bloodType: 'O+', // Just a fallback, would normally be joined from donor or stored in record
+      bloodType: user.bloodType || 'O+', 
       units: h.volume / 350,
       status: h.status === 'COMPLETED' ? 'Completed' : 'Cancelled',
       notes: h.status === 'COMPLETED' ? 'Post-donation checkup completed' : 'Adverse reaction or incomplete'
