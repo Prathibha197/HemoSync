@@ -21,6 +21,18 @@ export default function WhatsAppPanel({ expanded }) {
     setSending(true)
     try { 
       await sendWhatsAppPrompt({ group, type:'stock_prompt' }); 
+      
+      // Add a simulated message to the log so the user can visualize it
+      const simulatedMessage = {
+        id: Date.now(),
+        direction: 'out',
+        contact: group === 'all' ? 'All Banks' : group === 'tier2' ? 'Tier-2 Banks' : 'Tier-3 Banks',
+        time: 'Just now',
+        status: 'delivered',
+        message: '🏥 HemoSync Automated Prompt: Please reply with your current stock levels for all blood types.'
+      };
+      setLog(prev => [simulatedMessage, ...prev]);
+      
       setSent(true); 
       setTimeout(() => alert('Twilio WhatsApp API requires a registered Twilio Account and Facebook Business verification. This is currently running in simulation mode.'), 100);
       setTimeout(() => setSent(false), 3000) 
