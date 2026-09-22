@@ -174,8 +174,8 @@ const getNearbyBanks = async (req, res) => {
       return {
         id: bank.id,
         name: bank.name,
-        address: \`Main Road, \${randomCity}, India\`,
-        distance: \`\${randomDistance} km\`,
+        address: `Main Road, ${randomCity}, India`,
+        distance: `${randomDistance} km`,
         openNow: true,
         phone: bank.mobile || '1800-XXX-XXXX',
         emergencySupport: true,
