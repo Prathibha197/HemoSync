@@ -5,7 +5,7 @@ import { respondToAlert } from '@/services/donor.service'
 import TriageModal from './TriageModal'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
-import { urgencyBg, urgencyColor, timeAgo } from '@/lib/utils'
+import { urgencyBg, urgencyColor, timeAgo, mapsUrl } from '@/lib/utils'
 
 function AlertCard({ alert }) {
   const [triageOpen, setTriageOpen] = useState(false)
@@ -58,11 +58,7 @@ function AlertCard({ alert }) {
               </div>
               <div className="flex gap-2">
                 <a 
-                  href={
-                    alert.hospital.toLowerCase().includes('srm prime') 
-                      ? 'https://www.google.com/maps/dir/?api=1&destination=SRM+Prime+Hospital,+Ramapuram,+Chennai,+Tamil+Nadu'
-                      : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(alert.hospital)}`
-                  } 
+                  href={mapsUrl(`${alert.hospital} ${alert.address || ''}`)} 
                   target="_blank" 
                   rel="noreferrer" 
                   className="flex-1 text-center py-1.5 bg-emerald/10 hover:bg-emerald/20 text-emerald text-xs font-medium rounded border border-emerald/20 transition-colors"

@@ -29,8 +29,17 @@ export const calculateAge = (dob) => {
   return age
 }
 
-export const mapsUrl = (query) =>
-  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
+export const mapsUrl = (query) => {
+  const q = String(query || '').trim()
+  const lower = q.toLowerCase()
+  if (lower.includes('srm prime') || lower.includes('srm hospital') || lower.includes('srm')) {
+    return 'https://www.google.com/maps/dir/?api=1&destination=SRM+Prime+Hospital,+Ramapuram,+Chennai,+Tamil+Nadu'
+  }
+  const clean = lower.includes('chennai')
+    ? `${q}, Tamil Nadu, India`
+    : `${q}, Chennai, Tamil Nadu, India`
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(clean)}`
+}
 
 export const timeAgo = (iso) => {
   const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000)

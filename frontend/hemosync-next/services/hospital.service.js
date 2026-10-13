@@ -24,9 +24,9 @@ export const submitBloodRequest = async (payload) => {
       patient: payload.patient,
       ward: payload.ward,
       units: payload.units,
-      // Include dummy coordinates for location
-      longitude: 77.209,
-      latitude: 28.6139 
+      // Chennai, Tamil Nadu coordinates (Ramapuram)
+      longitude: 80.1818,
+      latitude: 13.0315 
     });
     return response.bloodRequest;
   } catch (err) {

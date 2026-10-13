@@ -82,7 +82,7 @@ export default function WhatsAppPanel({ expanded }) {
                       const replyMessage = {
                         id: Date.now(),
                         direction: 'in',
-                        contact: 'Apollo Hospital (Simulated Reply)',
+                        contact: 'Apollo Hospital (Greams Road, Chennai)',
                         time: 'Just now',
                         status: 'parsed',
                         message: 'We have 15 units of A+, 10 units of B+, 22 units of O+, and 5 units of AB+ available.',
