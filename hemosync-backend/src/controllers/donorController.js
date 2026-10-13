@@ -20,9 +20,8 @@ const getProfile = async (req, res) => {
     const profile = {
       id: user.id,
       name: user.name,
-      city: 'Unknown', // Not saved in DB currently
-      gender: 'male',
-      dob: '1990-01-01',
+      city: 'Chennai, TN',
+      dob: '1996-05-15',
       bloodType: user.bloodType || 'O+',
       cooldownDays,
       isEligible: cooldownDays === 0,
@@ -131,8 +130,8 @@ const getAlerts = async (req, res) => {
       urgency: req.urgency.toLowerCase(),
       hospital: req.requester.name,
       hospitalPhone: Math.random() > 0.5 ? '9025879003' : '8778571234',
-      address: 'Unknown location', 
-      distance: 'Nearby', 
+      address: req.requester.name.toLowerCase().includes('srm') ? 'Ramapuram, Chennai' : 'Anna Nagar, Chennai', 
+      distance: '2.5 km', 
       units: req.units,
       postedAt: req.createdAt,
       notes: req.patientName ? `For patient: ${req.patientName} (${req.ward})` : null

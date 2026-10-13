@@ -5,6 +5,9 @@ import { SocketProvider } from '@/context/SocketContext'
 export const metadata = {
   title: 'HemoSync — Blood Donation & Emergency Donor Network',
   description: 'Real-time blood donation network connecting donors, hospitals, and blood banks across India.',
+}
+
+export const viewport = {
   themeColor: '#0a0a0b',
 }
 

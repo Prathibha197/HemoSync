@@ -68,7 +68,7 @@ const register = async (req, res) => {
     // Simulate dispatch
     console.log(`\n==========================================`);
     console.log(`📧 EMAIL SIMULATION: Sent OTP to ${email}: ${otp}`);
-    console.log(`📲 SMS SIMULATION: Sent OTP to ${mobile}: ${phoneOtp}`);
+    console.log(`📲 SMS SIMULATION: Sent OTP to ${mobile}: ${otp}`);
     console.log(`==========================================\n`);
 
     res.status(201).json({ message: 'User registered, verify OTP', pendingVerification: true, email });

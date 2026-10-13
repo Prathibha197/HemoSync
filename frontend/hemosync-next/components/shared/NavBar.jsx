@@ -13,7 +13,7 @@ const META = {
 }
 
 const LINKS = {
-  donor:     [{ href:'/donor',             label:'Dashboard' },{ href:'/donor/history',     label:'History'   }],
+  donor:     [{ href:'/donor', label:'Dashboard' }, { href:'/donor/history', label:'History' }, { href:'/donor/find-banks', label:'Find Banks' }],
   hospital:  [{ href:'/hospital',          label:'Dashboard' }],
   bloodbank: [{ href:'/bloodbank',         label:'Dashboard' }],
 }
