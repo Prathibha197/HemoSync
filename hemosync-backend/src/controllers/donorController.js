@@ -156,19 +156,6 @@ const getNearbyBanks = async (req, res) => {
       }
     });
 
-    const formatted = banks.map(bank => {
-      // Aggregate inventory by type for this bank
-      const inventory = {};
-      const availableTypes = [];
-      
-      bank.bloodUnits.forEach(unit => {
-        inventory[unit.bloodType] = (inventory[unit.bloodType] || 0) + 1;
-      });
-
-      for (const [type, count] of Object.entries(inventory)) {
-        if (count > 0) availableTypes.push(type);
-      }
-
     // Authentic Chennai landmarks and localities
     const chennaiLocations = [
       { area: 'Ramapuram, Chennai', address: 'Mount-Poonamallee Road, Ramapuram, Chennai, Tamil Nadu' },
