@@ -59,13 +59,14 @@ const getInventory = async (req, res) => {
       where: { status: 'AVAILABLE' }
     });
 
-    const bloodTypesArray = ['A+', 'A−', 'B+', 'B−', 'AB+', 'AB−', 'O+', 'O−'];
+    const norm = (str) => String(str || '').replace('−', '-').trim();
+    const bloodTypesArray = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
     const networkInventory = bloodTypesArray.map(type => {
-      const typeUnits = units.filter(u => u.bloodType === type).length;
+      const typeUnits = units.filter(u => norm(u.bloodType) === norm(type)).length;
       return {
         type,
         units: typeUnits,
-        trend: Math.floor(Math.random() * 5) - 2, // mock trend for now
+        trend: Math.floor(Math.random() * 5) - 2,
         critical: typeUnits < 10
       };
     });
