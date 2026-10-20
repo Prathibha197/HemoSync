@@ -130,7 +130,7 @@ const getAlerts = async (req, res) => {
       urgency: req.urgency.toLowerCase(),
       hospital: req.requester.name,
       hospitalPhone: Math.random() > 0.5 ? '9025879003' : '8778571234',
-      address: req.requester.name.toLowerCase().includes('srm') ? 'Ramapuram, Chennai' : 'Anna Nagar, Chennai', 
+      address: req.requester.name.toLowerCase().includes('srm') ? 'Ramapuram, Chennai, Tamil Nadu' : 'Anna Nagar, Chennai, Tamil Nadu', 
       distance: '2.5 km', 
       units: req.units,
       postedAt: req.createdAt,

@@ -74,7 +74,7 @@ const createRequest = async (req, res) => {
       urgency: bloodRequest.urgency.toLowerCase(),
       hospital: hospital.name,
       hospitalPhone: Math.random() > 0.5 ? '9025879003' : '8778571234',
-      address: hospital.name.toLowerCase().includes('srm') ? 'Ramapuram, Chennai' : 'Anna Nagar, Chennai',
+      address: hospital.name.toLowerCase().includes('srm') ? 'Ramapuram, Chennai, Tamil Nadu' : 'Anna Nagar, Chennai, Tamil Nadu',
       distance: '2.5 km',
       units: bloodRequest.units,
       postedAt: bloodRequest.createdAt,

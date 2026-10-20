@@ -35,9 +35,10 @@ export const mapsUrl = (query) => {
   if (lower.includes('srm prime') || lower.includes('srm hospital') || lower.includes('srm')) {
     return 'https://www.google.com/maps/dir/?api=1&destination=SRM+Prime+Hospital,+Ramapuram,+Chennai,+Tamil+Nadu'
   }
-  const clean = lower.includes('chennai')
-    ? `${q}, Tamil Nadu, India`
-    : `${q}, Chennai, Tamil Nadu, India`
+  let clean = q
+  if (!lower.includes('chennai')) clean += ', Chennai'
+  if (!lower.includes('tamil nadu')) clean += ', Tamil Nadu'
+  if (!lower.includes('india')) clean += ', India'
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(clean)}`
 }
 
